@@ -76,3 +76,20 @@ WHERE
     UPPER(id_pedido) NOT LIKE 'C%'
     AND quantidade > 0
     AND preco_unitario > 0;
+
+    CREATE OR REPLACE VIEW ecommerce.fato_vendas AS
+SELECT
+  id_venda,
+  id_pedido,
+  data_pedido,
+  (data_pedido::date) AS data_pedido_dia,
+  date_trunc('month', data_pedido)::date AS mes,
+  id_cliente,
+  pais,
+  codigo_produto,
+  descricao_produto,
+  quantidade,
+  preco_unitario,
+  faturamento
+FROM ecommerce.vendas_validas;
+

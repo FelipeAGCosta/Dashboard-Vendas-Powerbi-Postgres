@@ -10,6 +10,8 @@ Kaggle (CSV) → PostgreSQL (tabelas) → Power BI (dashboard)
 - Power BI Desktop
 - (Opcional) Python: pandas + SQLAlchemy/psycopg2
 
+PostgreSQL: host localhost, porta 5433 (ou a porta definida no .env), banco ecommerce, usuário postgres.
+
 ## Estrutura do repositório
 - `data/` instruções do dataset (o CSV completo não é versionado)
 - `db/` scripts SQL (criação de tabelas e consultas)
