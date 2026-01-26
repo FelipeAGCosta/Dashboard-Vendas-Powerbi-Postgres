@@ -1,31 +1,91 @@
 # Dashboard de Vendas (Kaggle → PostgreSQL → Power BI)
 
-Projeto de portfólio para construir um dashboard de vendas de e-commerce no Power BI usando dados reais do Kaggle, carregados e organizados em um banco PostgreSQL.
+Dashboard de análise de vendas usando um dataset real do Kaggle (Online Retail).  
+Os dados são carregados em um banco **PostgreSQL** (via Docker) e consumidos no Power BI para geração de KPIs e visualizações.
 
-## Arquitetura
-Kaggle (CSV) → PostgreSQL (tabelas) → Power BI (dashboard)
+## 🎯 Objetivo
+Construir um mini pipeline de dados e um dashboard profissional para análise de vendas, demonstrando domínio prático de:
+- **PostgreSQL** (tabelas, views, carga de dados)
+- **Power BI** (modelagem simples, medidas DAX, filtros e visuais)
+- Organização de projeto para portfólio (GitHub)
 
-## Tecnologias
-- PostgreSQL
+## 🧱 Arquitetura
+**Kaggle (CSV) → PostgreSQL (Docker) → Power BI**
+
+## 📊 O que o dashboard entrega
+KPIs:
+- Faturamento Total
+- Pedidos
+- Clientes Únicos
+- Ticket Médio
+
+Visuais:
+- Faturamento por mês
+- Faturamento por país (Top 10)
+- Top 10 produtos por faturamento
+
+Filtros:
+- Período (data)
+- País
+
+## 🖼️ Prints
+> (adicione aqui depois de salvar os prints em /docs)
+
+![Visão Geral](docs/print_dashboard_01.png)
+![Filtro por país](docs/print_dashboard_02_filtro.png)
+
+## 🧰 Stack
+- PostgreSQL 16 (Docker)
 - Power BI Desktop
-- (Opcional) Python: pandas + SQLAlchemy/psycopg2
+- SQL (DDL + views)
+- Dataset Kaggle (Online Retail)
 
-PostgreSQL: host localhost, porta 5433 (ou a porta definida no .env), banco ecommerce, usuário postgres.
+## ▶️ Como reproduzir
 
-## Estrutura do repositório
-- `data/` instruções do dataset (o CSV completo não é versionado)
-- `db/` scripts SQL (criação de tabelas e consultas)
-- `powerbi/` arquivos do Power BI (pbix pode ser versionado depois)
+### 1) Subir o PostgreSQL com Docker
+Na raiz do projeto:
 
-## Como reproduzir (visão geral)
-1. Baixar o dataset do Kaggle (ver `data/README.md`)
-2. Criar tabelas e carregar dados no PostgreSQL (etapas em `db/`)
-3. Conectar o Power BI ao PostgreSQL e montar o dashboard
+```bash
+docker compose up -d
+```
 
-## KPIs do Dashboard (planejado)
-- Faturamento total
-- Número de pedidos
-- Clientes únicos
-- Ticket médio
-- Vendas por período e por categoria
-- Top produtos por faturamento
+### 2) Criar tabelas e carregar dados
+```bash
+docker compose exec -T postgres psql -U postgres -d ecommerce -f /scripts/criar_tabelas.sql
+docker compose exec -T postgres psql -U postgres -d ecommerce -f /scripts/carregar_dados.sql
+```
+
+### 3) Abrir o Power BI
+
+Abra o arquivo:
+
+- powerbi/dashboard_vendas.pbix
+
+Se precisar reconectar:
+
+- Servidor: localhost:5433
+
+- Banco: ecommerce
+
+- Tabela/View: ecommerce.fato_vendas
+
+## 📂 Estrutura do repositório
+
+dashboard-vendas-powerbi-postgres/
+├─ db/
+│  ├─ criar_tabelas.sql
+│  └─ carregar_dados.sql
+├─ docs/
+│  ├─ dashboard_01_visao_geral.png
+│  └─ dashboard_02_filtro_pais.png
+├─ powerbi/
+│  └─ dashboard_vendas.pbix
+├─ docker-compose.yml
+├─ .gitignore
+└─ README.md
+
+## 📝 Observações
+
+- O dataset original utiliza moeda £ (GBP) e foi mantido no padrão do arquivo para consistência.
+
+- Views foram utilizadas para simplificar a camada de consumo do Power BI.

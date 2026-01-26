@@ -195,3 +195,19 @@ kaggle.json
 venv/
 __pycache__/
 *.pyc
+
+# Docker volume (Postgres)
+pgdata/
+**/pgdata/
+
+# Python (se você criar scripts depois)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
