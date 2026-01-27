@@ -1,63 +1,89 @@
 # Dashboard de Vendas (Kaggle → PostgreSQL → Power BI)
 
-Dashboard de análise de vendas usando um dataset real do Kaggle (Online Retail).  
-Os dados são carregados em um banco **PostgreSQL** (via Docker) e consumidos no Power BI para geração de KPIs e visualizações.
+Mini pipeline de dados + dashboard no Power BI usando o dataset **Online Retail (Kaggle)**.  
+CSV local → carga no **PostgreSQL (Docker)** → consumo no **Power BI** via **views** (camada pronta para BI).
 
-## 🎯 Objetivo
-Construir um mini pipeline de dados e um dashboard profissional para análise de vendas, demonstrando domínio prático de:
-- **PostgreSQL** (tabelas, views, carga de dados)
-- **Power BI** (modelagem simples, medidas DAX, filtros e visuais)
-- Organização de projeto para portfólio (GitHub)
+**Principais skills:** PostgreSQL · Docker · Power BI · DAX · Modelagem de Dados · SQL
+
+---
+
+## ✅ O que esse projeto demonstra (para recrutador)
+
+- **PostgreSQL**: criação de schema/tabelas, índices e **views** para camada de consumo no BI  
+- **Docker**: ambiente reproduzível (subir o banco com 1 comando)
+- **Power BI**: KPIs, filtros, visuais e **medidas DAX**
+- **Qualidade de dados**: regras e métricas (taxas) para deixar o dado “confiável” no relatório
+
+---
 
 ## 🧱 Arquitetura
-**Kaggle (CSV) → PostgreSQL (Docker) → Power BI**
 
-## 📊 O que o dashboard entrega
-KPIs:
+**CSV (Kaggle, local) → PostgreSQL (Docker) → Power BI**
+
+---
+
+## 📊 Entregas do dashboard
+
+**KPIs**
 - Faturamento Total
 - Pedidos
 - Clientes Únicos
 - Ticket Médio
 
-Visuais:
+**Visuais**
 - Faturamento por mês
 - Faturamento por país (Top 10)
 - Top 10 produtos por faturamento
 
-Filtros:
-- Período (data)
+**Filtros**
+- Período
 - País
 
+---
+
+## ✅ Qualidade de dados (diferencial)
+
+Views no Postgres para padronizar o consumo no BI:
+
+- `ecommerce.fato_vendas` → view final consumida no Power BI  
+- `ecommerce.vendas_validas` → camada “limpa” para análise  
+- `ecommerce.resumo_qualidade_dados` → métricas (contagens e taxas)
+
+Métricas exibidas no Power BI:
+- Taxa Cancelamento/Devolução (%)
+- Taxa Registros Descartados (%)
+
+---
+
 ## 🖼️ Prints
-> (adicione aqui depois de salvar os prints em /docs)
 
-![Visão Geral](docs/print_dashboard_01.png)
+![Visão Geral](docs/print_dashboard_01.png)  
 ![Filtro por país](docs/print_dashboard_02_filtro.png)
+![Detalhamentos](docs/print_detalhamentos.png)
 
-## 🧰 Stack
-- PostgreSQL 16 (Docker)
-- Power BI Desktop
-- SQL (DDL + views)
-- Dataset Kaggle (Online Retail)
+---
 
-## ▶️ Como reproduzir
+## ▶️ Como rodar (local)
 
-### 1) Subir o PostgreSQL com Docker
-Na raiz do projeto:
+### 1) Coloque o CSV (não versionado)
+Baixe o dataset e coloque aqui:
 
+- `data/vendas_kaggle.csv`
+
+### 2) Suba o PostgreSQL (Docker)
 ```bash
 docker compose up -d
 ```
 
-### 2) Criar tabelas e carregar dados
+### 3) Crie tabelas/views e carregue os dados
 ```bash
 docker compose exec -T postgres psql -U postgres -d ecommerce -f /scripts/criar_tabelas.sql
 docker compose exec -T postgres psql -U postgres -d ecommerce -f /scripts/carregar_dados.sql
 ```
 
-### 3) Abrir o Power BI
+### 4) Abra o Power BI
 
-Abra o arquivo:
+Abra:
 
 - powerbi/dashboard_vendas.pbix
 
@@ -67,25 +93,11 @@ Se precisar reconectar:
 
 - Banco: ecommerce
 
-- Tabela/View: ecommerce.fato_vendas
+- View: ecommerce.fato_vendas
 
-## 📂 Estrutura do repositório
+## 📂 Estrutura
 
-dashboard-vendas-powerbi-postgres/
-├─ db/
-│  ├─ criar_tabelas.sql
-│  └─ carregar_dados.sql
-├─ docs/
-│  ├─ dashboard_01_visao_geral.png
-│  └─ dashboard_02_filtro_pais.png
-├─ powerbi/
-│  └─ dashboard_vendas.pbix
-├─ docker-compose.yml
-├─ .gitignore
-└─ README.md
-
-## 📝 Observações
-
-- O dataset original utiliza moeda £ (GBP) e foi mantido no padrão do arquivo para consistência.
-
-- Views foram utilizadas para simplificar a camada de consumo do Power BI.
+db/        -> scripts SQL (DDL, carga, views)
+docs/      -> prints do dashboard
+powerbi/   -> .pbix do relatório
+data/      -> CSV local (não versionado)
