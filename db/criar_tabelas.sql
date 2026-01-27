@@ -93,3 +93,27 @@ SELECT
   faturamento
 FROM ecommerce.vendas_validas;
 
+CREATE OR REPLACE VIEW ecommerce.resumo_qualidade_dados AS
+WITH totais AS (
+    SELECT
+        COUNT(*) AS linhas_total,
+        COUNT(*) FILTER (
+            WHERE id_pedido ILIKE 'C%' OR quantidade <= 0 OR preco_unitario <= 0
+        ) AS linhas_canceladas_ou_devolvidas,
+        COUNT(*) FILTER (WHERE id_cliente IS NULL) AS linhas_sem_cliente
+    FROM ecommerce.vendas
+),
+validas AS (
+    SELECT COUNT(*) AS linhas_validas
+    FROM ecommerce.vendas_validas
+)
+SELECT
+    t.linhas_total,
+    v.linhas_validas,
+    (t.linhas_total - v.linhas_validas) AS linhas_descartadas,
+    t.linhas_canceladas_ou_devolvidas,
+    t.linhas_sem_cliente,
+    ROUND((t.linhas_canceladas_ou_devolvidas::numeric / NULLIF(t.linhas_total, 0)) * 100, 2) AS pct_canceladas_ou_devolvidas,
+    ROUND(((t.linhas_total - v.linhas_validas)::numeric / NULLIF(t.linhas_total, 0)) * 100, 2) AS pct_descartadas
+FROM totais t
+CROSS JOIN validas v;
