@@ -100,4 +100,4 @@ Se precisar reconectar:
 db/        -> scripts SQL (DDL, carga, views)
 docs/      -> prints do dashboard
 powerbi/   -> .pbix do relatório
-data/      -> CSV local (não versionado)
+data/      -> CSV local
