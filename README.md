@@ -7,7 +7,7 @@ CSV local → carga no **PostgreSQL (Docker)** → consumo no **Power BI** via *
 
 ---
 
-## ✅ O que esse projeto demonstra (para recrutador)
+## ✅ O que esse projeto demonstra
 
 - **PostgreSQL**: criação de schema/tabelas, índices e **views** para camada de consumo no BI  
 - **Docker**: ambiente reproduzível (subir o banco com 1 comando)
@@ -65,7 +65,7 @@ Métricas exibidas no Power BI:
 
 ## ▶️ Como rodar (local)
 
-### 1) Coloque o CSV (não versionado)
+### 1) Coloque o CSV
 Baixe o dataset e coloque aqui:
 
 - `data/vendas_kaggle.csv`
